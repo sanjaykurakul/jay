@@ -1,0 +1,233 @@
+Java Strings - Part 2 (Essential String Methods & Comparisons)
+1. == vs equals() ⭐⭐⭐⭐⭐ (Most Important)
+This is one of the most frequently asked interview questions.
+== Operator
+== compares memory addresses (references), not the actual content of the String.
+Example 1
+String s1 = "Java";
+String s2 = "Java";
+System.out.println(s1 == s2);
+Output:
+true
+Why?
+Memory:
+
+          String Pool
+
+      +-----------+
+      |  "Java"   |
+      +-----------+
+         ^      ^
+         |      |
+        s1     s2
+
+Both s1 and s2 point to the same object, so == returns true.
+
+Example 2
+String s1 = new String("Java");
+String s2 = new String("Java");
+System.out.println(s1 == s2);
+Output:
+false
+Memory:
+Heap
+
++-----------+
+| "Java"    | ← s1
++-----------+
+
++-----------+
+| "Java"    | ← s2
++-----------+
+
+They are different objects, so == returns false.
+
+---------****equals() Method****----------
+
+equals() compares the actual content of two Strings.
+
+Example:
+String s1 = new String("Java");
+String s2 = new String("Java");
+System.out.println(s1.equals(s2));
+Output:
+true
+Even though the objects are different, the content is the same.
+
+---------********Interview Tip***********--------------------
+
+Always use:
+s1.equals(s2)
+
+instead of:
+s1 == s2
+when comparing String values.
+
+-------*****2. equalsIgnoreCase()*****----------
+
+Sometimes we don't care about uppercase/lowercase differences.
+Example:
+String s1 = "JAVA";
+String s2 = "java";
+System.out.println(s1.equals(s2));
+Output:
+false
+Now use:
+System.out.println(s1.equalsIgnoreCase(s2));
+Output:
+true...
+Useful in:
+Login systems
+User input validation
+Search features
+
+---------*********3. compareTo()***********------------
+
+Used for lexicographical (dictionary) comparison.
+Syntax:
+
+--->>str1.compareTo(str2)
+
+Rule
+Returns:
+0 → Strings are equal
+Positive → First String is greater
+Negative → First String is smaller
+Example 1
+System.out.println("Apple".compareTo("Apple"));
+Output:
+0
+Example 2
+System.out.println("Cat".compareTo("Bat"));
+Output:
+Positive number
+Because 'C' > 'B' in Unicode.
+Example 3
+System.out.println("Bat".compareTo("Cat"));
+Output:
+Negative number.....
+/*Where is compareTo() Used?
+Sorting Strings
+Dictionary order
+Competitive programming
+Searching algorithms
+*/
+---------*******4. length()*********----------------
+
+Returns the number of characters in the String.
+Example:
+String s = "Programming";
+System.out.println(s.length());
+Output:
+11
+Remember:
+length()
+is a method for Strings.
+
+---------*******5. charAt()*******---------
+
+Returns the character at a specific index.
+Example:
+String s = "Java";
+System.out.println(s.charAt(0));
+Output:
+J
+
+-----******6. indexOf()************------------
+
+Returns the first occurrence of a character or substring.
+Example:
+String s = "Programming";
+System.out.println(s.indexOf('g'));
+Output:
+3
+
+----------*******7. lastIndexOf()*********----------
+
+Returns the last occurrence.
+Example:
+String s = "Programming";
+System.out.println(s.lastIndexOf('g'));
+Output:
+10
+
+-----------********8. substring()*********--------------
+
+Extracts part of a String.
+One Parameter
+String s = "Programming";
+System.out.println(s.substring(3));
+Output:
+gramming..
+Starts at index 3 and goes to the end.
+
+Two Parameters
+System.out.println(s.substring(3,7));
+
+Output:
+gram
+Rule:
+Start index → Included
+End index → Excluded
+Think of it like a half-open interval: [start, end).
+
+------------*********9. contains()**********--------------
+
+Checks whether a String contains another String.
+Example:
+String s = "Java Programming";
+System.out.println(s.contains("Java"));
+Output:
+true
+System.out.println(s.contains("Python"));
+
+---------*********10. startsWith()**********-------------
+Example:
+String s = "Programming";
+System.out.println(s.startsWith("Pro"));
+Output:
+true....
+
+---------************11. endsWith()---------************
+
+Example:
+System.out.println(s.endsWith("ing"));
+Output:
+true....
+
+---------************12. isEmpty()---------************
+
+Checks whether the String length is 0.
+String s = "";
+System.out.println(s.isEmpty());
+Output:
+true..
+-->String s = " ";
+
+System.out.println(s.isEmpty());
+Output:
+false..
+A space is still a character.
+
+---------************13. isBlank() (Java 11+)---------************
+
+Checks whether the String contains only whitespace.
+String s = "   ";
+System.out.println(s.isBlank());
+Output:
+true
+
+---------************14. toCharArray()---------************
+
+Converts a String into a character array.
+String s = "Java";
+char[] arr = s.toCharArray();
+Now:
+arr = {'J','a','v','a'}
+You can traverse it:
+for(char c : arr)
+{
+    System.out.println(c);
+}
+
+This is very useful in many interview problems.

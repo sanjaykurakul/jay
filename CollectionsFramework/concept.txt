@@ -1,0 +1,2 @@
+Framework-->A framework is a pre-written, reusable software platform.It provides foundation/structure
+            for developing applications efficiently.

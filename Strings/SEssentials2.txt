@@ -1,0 +1,72 @@
+Java Strings - Part 3 (Traversal, Character Class & ASCII)
+
+1. What is String Traversal?
+
+Traversal means visiting every character of the String exactly once.
+
+--------***********----------------
+Method 1: Using for Loop ⭐⭐⭐⭐⭐ (Most Important)
+String s = "HELLO";
+
+for(int i = 0; i < s.length(); i++)
+{
+    System.out.println(s.charAt(i));
+}
+
+--------***********----------------
+Method 2: Using while Loop
+String s = "HELLO";
+
+int i = 0;
+
+while(i < s.length())
+{
+    System.out.println(s.charAt(i));
+    i++;
+}
+Same output.
+Useful when traversal depends on conditions.
+-------------------------***********----------------
+Method 3: Using toCharArray()
+
+Convert String into character array.
+
+String s = "HELLO";
+
+char[] arr = s.toCharArray();
+
+Now,
+arr = {'H','E','L','L','O'}
+-------------------------***********-------------------------
+2. Character Class
+Java provides a built-in class called:
+Character
+
+It contains many useful methods for checking characters.
+These methods save us from writing long conditions.
+
+------------------****************-----------------------------
+Character.isLetter()
+
+Character.isDigit()
+
+Character.isUpperCase()
+
+Character.isLowerCase()
+
+Character.isWhitespace()
+
+Character.toUpperCase()
+
+Character.toLowerCase()
+####REMEMBER THESE############
+
+
+Why nextLine() Instead of next()?
+This is a very common interview question.
+
+next()
+Reads only one word.
+
+nextLine()
+Reads the entire line.

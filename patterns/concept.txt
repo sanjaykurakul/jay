@@ -1,0 +1,22 @@
+Comparison of the First Three Patterns:
+Pattern	            Inner Loop
+Square	            j <= n
+Triangle	        j <= i
+Inverted Triangle	j <= n-i+1
+
+
+
+Memory Trick ⭐⭐⭐(pyramid)
+
+Whenever you see a full pyramid, remember:
+
+Spaces ↓
+n-i
+Stars ↑
+2*i-1
+
+Inverted Pyramid
+i-1----->Spaces
+2*(n-i)+1-------->stars
+
+That's the entire logic.

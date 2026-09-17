@@ -1,0 +1,26 @@
+⭐ One important distinction
+
+You'll eventually learn:
+HashMap
+HashSet
+Don't confuse them.
+
+----------******HashMap*******-------
+Stores:
+KEY → VALUE
+Example:
+apple → 3
+banana → 5
+
+--------******HashSet******---------
+
+Stores only:
+VALUE
+Example:
+apple
+banana
+orange
+So a simple rule:
+Need count/information associated with something → HashMap
+
+Only need to know whether something exists → HashSet

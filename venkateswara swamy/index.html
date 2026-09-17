@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Pixel Pop Photo Reveal</title>
+
+
+<style>
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #000;
+
+}
+
+
+/* =========================================
+   PARTICLE CANVAS
+========================================= */
+
+#canvas {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: block;
+
+    z-index: 1;
+
+}
+
+
+/* =========================================
+   FINAL ORIGINAL PHOTO
+========================================= */
+
+#finalImage {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    object-fit: cover;
+
+    object-position: center center;
+
+    display: block;
+
+    opacity: 0;
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    transition: opacity 1.2s ease;
+
+    /*
+       DO NOT use pixelation.
+    */
+
+    image-rendering: auto;
+
+    filter: none;
+
+}
+
+
+/* =========================================
+   START SCREEN
+========================================= */
+
+#startScreen {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 10;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: #000;
+
+}
+
+
+/* =========================================
+   START BUTTON
+========================================= */
+
+#startButton {
+
+    padding: 18px 45px;
+
+    border: 2px solid white;
+
+    border-radius: 50px;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 20px;
+
+    font-family: Arial, sans-serif;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+#startButton:hover {
+
+    background: white;
+
+    color: black;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     START SCREEN
+========================================= -->
+
+<div id="startScreen">
+
+    <button id="startButton">
+        CLICK TO START
+    </button>
+
+</div>
+
+
+<!-- =========================================
+     PARTICLE CANVAS
+========================================= -->
+
+<canvas id="canvas"></canvas>
+
+
+<!-- =========================================
+     ORIGINAL IMAGE
+========================================= -->
+
+<img
+    id="finalImage"
+    src="myphoto.jpeg"
+    alt="Photo"
+>
+
+
+<!-- =========================================
+     MUSIC
+========================================= -->
+
+<audio
+    id="revealSound"
+    src="reveal.mp3"
+    preload="auto">
+</audio>
+
+
+
+<script>
+
+
+/* =========================================
+   SETTINGS
+========================================= */
+
+
+/*
+   Photo filename
+*/
+
+const IMAGE_NAME =
+    "myphoto.jpeg";
+
+
+/*
+   Particle reveal time
+
+   6000 = 6 seconds
+*/
+
+const REVEAL_TIME =
+    6000;
+
+
+/*
+   Particle spacing
+
+   4 = better detail
+   5 = balanced
+   6 = fewer particles
+*/
+
+const PARTICLE_STEP =
+    4;
+
+
+/*
+   Particle size
+*/
+
+const PARTICLE_SIZE =
+    3;
+
+
+/*
+   Individual particle animation
+*/
+
+const POP_DURATION =
+    350;
+
+
+/*
+   Brightness
+*/
+
+const BRIGHTNESS =
+    1.15;
+
+
+/*
+   Minimum music duration
+
+   10000 = 10 seconds
+*/
+
+const MIN_MUSIC_TIME =
+    10000;
+
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const canvas =
+    document.getElementById(
+        "canvas"
+    );
+
+
+const ctx =
+    canvas.getContext(
+        "2d"
+    );
+
+
+const finalImage =
+    document.getElementById(
+        "finalImage"
+    );
+
+
+const revealSound =
+    document.getElementById(
+        "revealSound"
+    );
+
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+
+const startButton =
+    document.getElementById(
+        "startButton"
+    );
+
+
+/* =========================================
+   IMAGE
+========================================= */
+
+const image =
+    new Image();
+
+
+image.src =
+    IMAGE_NAME;
+
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let width =
+    window.innerWidth;
+
+
+let height =
+    window.innerHeight;
+
+
+let particles =
+    [];
+
+
+let animationStart =
+    0;
+
+
+let musicStartTime =
+    0;
+
+
+let finished =
+    false;
+
+
+
+/* =========================================
+   CANVAS RESOLUTION
+========================================= */
+
+function resizeCanvas() {
+
+    width =
+        window.innerWidth;
+
+
+    height =
+        window.innerHeight;
+
+
+    /*
+       Use device pixel ratio.
+
+       This makes the particle canvas
+       sharper on Retina / high-DPI screens.
+    */
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+
+    canvas.width =
+        width * dpr;
+
+
+    canvas.height =
+        height * dpr;
+
+
+    canvas.style.width =
+        width + "px";
+
+
+    canvas.style.height =
+        height + "px";
+
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+resizeCanvas();
+
+
+
+/* =========================================
+   IMAGE LOADED
+========================================= */
+
+image.onload =
+    function() {
+
+        createParticles();
+
+    };
+
+
+image.onerror =
+    function() {
+
+        alert(
+            "Image not found: " +
+            IMAGE_NAME
+        );
+
+    };
+
+
+
+/* =========================================
+   CREATE PARTICLES
+========================================= */
+
+function createParticles() {
+
+
+    particles = [];
+
+
+    /*
+       We create a temporary canvas
+       based on the ORIGINAL image
+       dimensions.
+
+       This gives us the best possible
+       pixel information.
+    */
+
+    const tempCanvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    const tempCtx =
+        tempCanvas.getContext(
+            "2d"
+        );
+
+
+    /*
+       Keep original image resolution.
+    */
+
+    const originalWidth =
+        image.naturalWidth;
+
+
+    const originalHeight =
+        image.naturalHeight;
+
+
+    tempCanvas.width =
+        originalWidth;
+
+
+    tempCanvas.height =
+        originalHeight;
+
+
+    /*
+       Draw original image.
+    */
+
+    tempCtx.drawImage(
+
+        image,
+
+        0,
+        0,
+
+        originalWidth,
+        originalHeight
+
+    );
+
+
+    /*
+       Read original pixels.
+    */
+
+    const imageData =
+        tempCtx.getImageData(
+
+            0,
+            0,
+
+            originalWidth,
+            originalHeight
+
+        );
+
+
+    /*
+       Calculate how the image
+       covers the screen.
+
+       Same behavior as:
+
+       object-fit: cover
+    */
+
+    const scale =
+        Math.max(
+
+            width /
+            originalWidth,
+
+            height /
+            originalHeight
+
+        );
+
+
+    const displayedWidth =
+        originalWidth *
+        scale;
+
+
+    const displayedHeight =
+        originalHeight *
+        scale;
+
+
+    /*
+       Center image.
+    */
+
+    const offsetX =
+        (
+            width -
+            displayedWidth
+        ) / 2;
+
+
+    const offsetY =
+        (
+            height -
+            displayedHeight
+        ) / 2;
+
+
+
+    /* =====================================
+       READ ORIGINAL PIXELS
+    ===================================== */
+
+    for (
+
+        let y = 0;
+
+        y < originalHeight;
+
+        y += PARTICLE_STEP
+
+    ) {
+
+
+        for (
+
+            let x = 0;
+
+            x < originalWidth;
+
+            x += PARTICLE_STEP
+
+        ) {
+
+
+            const index =
+                (
+                    y *
+                    originalWidth +
+                    x
+                ) * 4;
+
+
+            let r =
+                imageData.data[
+                    index
+                ];
+
+
+            let g =
+                imageData.data[
+                    index + 1
+                ];
+
+
+            let b =
+                imageData.data[
+                    index + 2
+                ];
+
+
+            const a =
+                imageData.data[
+                    index + 3
+                ];
+
+
+            /*
+               Ignore transparent pixels.
+            */
+
+            if (
+                a < 80
+            ) {
+
+                continue;
+
+            }
+
+
+            /*
+               Brightness.
+            */
+
+            r =
+                Math.min(
+                    255,
+                    r * BRIGHTNESS
+                );
+
+
+            g =
+                Math.min(
+                    255,
+                    g * BRIGHTNESS
+                );
+
+
+            b =
+                Math.min(
+                    255,
+                    b * BRIGHTNESS
+                );
+
+
+            /*
+               Convert original
+               image coordinates to
+               screen coordinates.
+            */
+
+            const screenX =
+                offsetX +
+                x * scale;
+
+
+            const screenY =
+                offsetY +
+                y * scale;
+
+
+            /*
+               Random delay.
+            */
+
+            const delay =
+                Math.random() *
+                (
+                    REVEAL_TIME -
+                    POP_DURATION
+                );
+
+
+            particles.push({
+
+                x:
+                    screenX,
+
+                y:
+                    screenY,
+
+                r:
+                    r,
+
+                g:
+                    g,
+
+                b:
+                    b,
+
+                delay:
+                    delay
+
+            });
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================================
+   EASING
+========================================= */
+
+function easeOutBack(t) {
+
+
+    const c1 =
+        1.70158;
+
+
+    const c3 =
+        c1 + 1;
+
+
+    return (
+
+        1 +
+
+        c3 *
+        Math.pow(
+            t - 1,
+            3
+        )
+
+        +
+
+        c1 *
+        Math.pow(
+            t - 1,
+            2
+        )
+
+    );
+
+}
+
+
+
+/* =========================================
+   START BUTTON
+========================================= */
+
+startButton.addEventListener(
+
+    "click",
+
+    function() {
+
+
+        /*
+           Hide start screen.
+        */
+
+        startScreen.style.display =
+            "none";
+
+
+        /*
+           Start music.
+        */
+
+        revealSound.currentTime =
+            0;
+
+
+        revealSound.volume =
+            0.7;
+
+
+        musicStartTime =
+            performance.now();
+
+
+        revealSound.play()
+            .catch(
+
+                function(error) {
+
+                    console.log(
+                        error
+                    );
+
+                }
+
+            );
+
+
+        /*
+           Start animation.
+        */
+
+        animationStart =
+            performance.now();
+
+
+        requestAnimationFrame(
+            animate
+        );
+
+    }
+
+);
+
+
+
+/* =========================================
+   PARTICLE ANIMATION
+========================================= */
+
+function animate(
+    timestamp
+) {
+
+
+    const elapsed =
+        timestamp -
+        animationStart;
+
+
+    /*
+       Clear canvas.
+    */
+
+    ctx.clearRect(
+
+        0,
+        0,
+
+        width,
+        height
+
+    );
+
+
+    /*
+       Draw particles.
+    */
+
+    for (
+
+        let i = 0;
+
+        i < particles.length;
+
+        i++
+
+    ) {
+
+
+        const p =
+            particles[i];
+
+
+        const localTime =
+            elapsed -
+            p.delay;
+
+
+        /*
+           Particle hasn't appeared yet.
+        */
+
+        if (
+            localTime <= 0
+        ) {
+
+            continue;
+
+        }
+
+
+        /*
+           Progress.
+        */
+
+        let progress =
+            localTime /
+            POP_DURATION;
+
+
+        progress =
+            Math.max(
+
+                0,
+
+                Math.min(
+                    1,
+                    progress
+                )
+
+            );
+
+
+        /*
+           Pop animation.
+        */
+
+        const pop =
+            easeOutBack(
+                progress
+            );
+
+
+        /*
+           Scale particle.
+
+           Use scale so the particle
+           remains visible on large screens.
+        */
+
+        const size =
+            Math.max(
+
+                0.5,
+
+                PARTICLE_SIZE *
+                pop
+
+            );
+
+
+        /*
+           Color.
+        */
+
+        ctx.fillStyle =
+            `rgb(
+                ${Math.round(p.r)},
+                ${Math.round(p.g)},
+                ${Math.round(p.b)}
+            )`;
+
+
+        /*
+           Draw particle.
+        */
+
+        ctx.fillRect(
+
+            p.x -
+            size / 2,
+
+            p.y -
+            size / 2,
+
+            size,
+
+            size
+
+        );
+
+    }
+
+
+    /*
+       Continue.
+    */
+
+    if (
+
+        elapsed <
+        REVEAL_TIME +
+        POP_DURATION
+
+    ) {
+
+        requestAnimationFrame(
+            animate
+        );
+
+    }
+
+    else {
+
+        showFinalImage();
+
+    }
+
+}
+
+
+
+/* =========================================
+   SHOW FINAL IMAGE
+========================================= */
+
+function showFinalImage() {
+
+
+    if (
+        finished
+    ) {
+
+        return;
+
+    }
+
+
+    finished =
+        true;
+
+
+    /*
+       Completely remove particles.
+    */
+
+    ctx.clearRect(
+
+        0,
+        0,
+
+        width,
+        height
+
+    );
+
+
+    /*
+       IMPORTANT:
+
+       We DO NOT draw the image
+       through canvas.
+
+       We show the ORIGINAL
+       <img> element.
+
+       This prevents the final
+       image from becoming blurry.
+    */
+
+    setTimeout(
+
+        function() {
+
+            finalImage.style.opacity =
+                "1";
+
+
+        },
+
+        100
+
+    );
+
+
+    /*
+       Keep music for at least
+       10 seconds.
+    */
+
+    const elapsedMusic =
+        performance.now() -
+        musicStartTime;
+
+
+    const remaining =
+        MIN_MUSIC_TIME -
+        elapsedMusic;
+
+
+    if (
+        remaining > 0
+    ) {
+
+        setTimeout(
+
+            fadeOutMusic,
+
+            remaining
+
+        );
+
+    }
+
+    else {
+
+        fadeOutMusic();
+
+    }
+
+}
+
+
+
+/* =========================================
+   FADE OUT MUSIC
+========================================= */
+
+function fadeOutMusic() {
+
+
+    if (
+        revealSound.paused
+    ) {
+
+        return;
+
+    }
+
+
+    const fade =
+        setInterval(
+
+            function() {
+
+
+                if (
+                    revealSound.volume >
+                    0.05
+                ) {
+
+                    revealSound.volume -=
+                        0.05;
+
+                }
+
+                else {
+
+                    revealSound.volume =
+                        0;
+
+                    revealSound.pause();
+
+                    clearInterval(
+                        fade
+                    );
+
+                }
+
+            },
+
+            100
+
+        );
+
+}
+
+
+</script>
+
+</body>
+
+</html>

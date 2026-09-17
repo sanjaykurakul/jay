@@ -1,0 +1,36 @@
+What is Constructor Overloading?
+Constructor overloading means having multiple constructors in the same class with different parameter lists.
+Example:
+class Student {
+
+    Student() {
+    }
+
+    Student(String name) {
+    }
+
+    Student(String name, int marks) {
+    }
+}
+All three constructors have the same name:
+Student..
+But their parameters are different.
+
+**********Why Do We Need Constructor Overloading?**********
+
+Suppose sometimes we know only the student's name.
+Sometimes we know:
+
+name + marks
+
+Sometimes we know:
+
+name + marks + age
+
+Instead of creating different classes, we can provide multiple constructors.
+
+Student()
+Student(String name)
+Student(String name, int marks)
+
+Java automatically chooses the appropriate constructor based on the arguments.

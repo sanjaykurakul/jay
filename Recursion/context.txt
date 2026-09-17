@@ -1,0 +1,17 @@
+What is Recursion?
+Recursion = a method calling itself.
+
+⭐ Important recursion pattern
+
+Remember this structure:
+
+static void method(int n) 
+{
+    if (baseCondition)
+    {
+        return;
+    }
+    // work
+    method(smallerInput);
+}
+You now understand the basic recursion mechanism.

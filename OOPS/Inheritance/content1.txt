@@ -1,0 +1,88 @@
+this vs super
+
+This is a very important comparison.
+
+this:
+Refers to the current class/object.
+this.name = name;
+Means:
+Current object's name.
+
+super:
+Refers to the parent class.
+super(name, age);
+Means:
+Call the parent constructor.
+
+Simple memory trick:
+
+this  → current class
+super → parent class
+
+super Can Call Parent Methods...
+Suppose:
+class Animal {
+    void sound() {
+
+        System.out.println("Animal sound");
+    }
+}
+class Dog extends Animal {
+    void sound() {
+
+        System.out.println("Dog sound");
+    }
+
+    void show() {
+
+        super.sound();
+    }
+}
+NOW;
+Dog d = new Dog();
+d.sound();
+d.show();
+
+Output:
+Dog sound
+Animal sound
+
+***super with Variables:
+
+Suppose both parent and child have the same variable name.
+class Person {
+    int age = 50;
+}
+class Student extends Person {
+    int age = 20;
+    void display() {
+        System.out.println(age);
+        System.out.println(super.age);
+    }
+}
+
+Output:
+20
+50
+
+Important Interview Questions:
+Q1. Are constructors inherited?
+No,Constructors are not inherited.
+
+Q2. Does the parent constructor execute when a child object is created?
+Yes,The parent constructor executes before the child constructor.
+
+Q3. What does super() do?
+It calls the parent class's constructor.
+
+Q4. Where must super() appear?
+It must be the first statement in the child constructor.
+
+Q5. What if the parent has only a parameterized constructor?
+The child must explicitly call it using:
+
+super(arguments);
+Example:
+Student(String name) {
+    super(name);
+}

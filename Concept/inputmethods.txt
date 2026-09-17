@@ -1,0 +1,11 @@
+int n = sc.nextInt();
+
+long l = sc.nextLong();
+
+double d = sc.nextDouble();
+
+String s = sc.next();
+
+String line = sc.nextLine();
+
+char ch = sc.next().charAt(0);

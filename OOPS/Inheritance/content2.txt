@@ -1,0 +1,68 @@
+What is @Override?
+
+You may have noticed:
+@Override
+void sound() {
+
+@Override is an annotation that tells Java:
+
+"I intend to override a parent method."
+
+It helps catch mistakes.
+
+For example:
+
+class Dog extends Animal {
+
+    @Override
+    void soud() {
+        System.out.println("Dog barks");
+    }
+}
+
+There is a spelling mistake:
+soud()
+instead of:
+sound()
+Because of @Override, Java will report an error.
+
+Important Interview Questions
+Can a static method be overridden?
+Not in the normal runtime-polymorphism sense. Static methods are associated with the class, not dynamically dispatched based on the object.
+
+For beginner interviews, remember:
+Static methods are hidden, not overridden.
+
+Can a private method be overridden?
+
+No,A private method is not accessible to the child class and is not inherited.
+
+Can a final method be overridden?
+No.
+If a method is:
+final
+
+it cannot be overridden.
+
+Example:
+
+final void display() {
+}
+15. Logic Building
+
+When you see:
+"Parent and child should have the same method, but child needs different behavior."
+
+Think:
+
+Inheritance
+    ↓
+Same method signature
+    ↓
+Child provides new implementation
+    ↓
+Method Overriding
+If you see:
+"Same method name but different parameters."
+Think:
+Method Overloading

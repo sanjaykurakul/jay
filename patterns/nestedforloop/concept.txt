@@ -1,0 +1,23 @@
+What is a Nested For Loop?
+
+A for loop inside another for loop is called a nested for loop.
+
+Syntax:
+
+for(initialization1; condition1; update1){
+
+    for(initialization2; condition2; update2){
+
+        // statements
+    }
+
+}
+/*
+Outer loop → controls the rows
+Inner loop → controls the columns
+
+Think of a notebook:
+
+Rows = horizontal lines
+Columns = items in each row
+*/

@@ -1,0 +1,23 @@
+What is Method Overloading?
+Having multiple methods with the same name but different parameters.
+Example:
+static int add(int a, int b) {
+    return a + b;
+}
+static int add(int a, int b, int c) {
+    return a + b + c;
+}
+Both methods are called:
+add
+
+But their parameters are different:
+add(int, int)
+add(int, int, int)
+///Java decides which method to call based on the number/type of arguments....
+
+---------------***********------------------
+The difference can be:
+->Number of parameters
+->Parameter types
+->Order of parameter types
+Return type alone cannot create overloading.

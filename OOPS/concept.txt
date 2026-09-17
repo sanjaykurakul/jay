@@ -1,0 +1,47 @@
+1. What is OOP?
+Java is mainly an object-oriented programming language.
+Instead of writing a program only as a collection of functions, OOP allows us to model real-world things as objects.
+For example:
+Student
+Car........
+Each object can have:
+Properties (data) → variables
+Behaviors (actions) → methods
+
+2. What is a Class?
+A class is a blueprint/template for creating objects.
+Think about a house blueprint.
+The blueprint itself is not the actual house.
+A class contains:
+Variables → fields/data members
+Methods → behaviors
+Constructors → used to initialize objects
+Other OOP components..
+
+-------------********----------------
+3. What is an Object?
+An object is an actual instance of a class.
+If:
+class Student
+is the blueprint, then:
+Student s1 = new Student();
+creates an object.
+Here:
+Student       → class
+s1            → reference variable
+new Student() → creates object
+
+----******Student s1 = new Student();******----
+This is extremely important in Java.
+Break it down:
+Student s1 = new Student();
+   ↓      ↓       ↓
+ class   ref    object
+Student:
+The type of the reference.
+s1:
+The reference variable.
+new:
+Creates a new object in memory.
+Student():
+Calls the class constructor.

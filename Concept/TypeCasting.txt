@@ -1,0 +1,21 @@
+//Implicit Casting
+
+Smaller → Larger
+int a = 10;
+double b = a;
+System.out.println(b);
+
+Output:
+10.0
+
+
+//Explicit Casting
+
+Larger → Smaller
+
+double a = 10.75;
+int b = (int)a;
+System.out.println(b);
+
+Output:
+10

@@ -1,0 +1,85 @@
+#The Main Idea Of Moving Zeroes
+
+-->Pointer 1 (read)
+
+Reads every element..
+
+-->Pointer 2 (write)
+
+Keeps track of where the next non-zero element should be placed.
+
+-------Visualization-------
+Input:
+0 1 0 3 12
+W(intially at o index)
+R
+
+Iteration 1:
+0 1 0 3 12
+W 
+R (Read sees '0')
+Ignore and Move only Read
+R++
+Now,
+0 1 0 3 12
+w
+  R
+
+Iteration 2:
+0 1 0 3 12
+w
+  R(Read sees '1')
+Put it at write.(Swap)
+Now,
+Read++
+Write++
+1 0 0 3 12
+  W
+    R
+
+Iteration 3:
+1 0 0 3 12
+
+  W
+    R(read sees '0')
+now R++;
+1 0 0 3 12
+
+  W
+       R
+
+Iteration 4:
+1 0 0 3 12
+
+  W
+      R(Read sees'3')
+Swap(put it in write)..
+Now,
+R++
+W++
+1 3 0 0 12
+    W
+         R
+
+Iteration 5:
+1 3 0 0 12
+    w
+         Read(Read sees '12')
+put it in 'W'(Swap)
+Now,
+1 3 12 0 0------------------------Final Result-------------------
+    W
+         R
+
+------------Important Observation--------------
+-->Read Pointer
+Always moves.
+read++
+
+-->Write Pointer
+Moves only when a non-zero element is found.
+This is the most important idea in this problem.
+    
+
+
+

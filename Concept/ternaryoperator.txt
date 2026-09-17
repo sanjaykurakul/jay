@@ -1,0 +1,5 @@
+//ternary operator
+
+If given conditions is like this means{(n & 1) == 0 ? "Even" : "Odd") here is the explanation,
+
+condition ? valueIfTrue : valueIfFalse

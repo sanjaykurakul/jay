@@ -1,0 +1,80 @@
+1. What is a String?
+A String is a sequence of characters.
+Examples:
+"Hello"
+"Java"
+Each character has an index.
+----------*****-------------
+2. What is a Character?
+A character is a single symbol enclosed in single quotes (' ').
+Example:
+char ch = 'A';
+----------****------------
+3. Difference between char and String
+char	                    String
+Stores one character	Stores multiple characters
+Single quotes	        Double quotes
+Primitive data type	    Class
+Example: 'A'	        Example: "A"
+-----------------********-----------------------
+Example:
+char c = 'A';
+String s = "A";
+
+---->WAYS TO CREATE A String
+String s = "Java";
+String s = new String("Java");{This creates a new String object explicitly.}
+Although both display the same text.
+They differ in how memory is allocated (we'll understand this with the String Pool).
+-----------############--------------
+What is a String Literal?
+A String written directly inside double quotes is called a String Literal.
+Example:
+String s = "Hello";
+Here,
+"Hello" is the String Literal.
+Java stores string literals in a special memory area called the String Pool.
+
+Where are Strings Stored in Memory?
+Java memory has different areas. For Strings, two are important:
+1)Heap Memory
+2)String Pool
+---Heap Memory---
+All objects in Java are stored in the Heap.
+Example:
+new String("Java")
+creates a new object in the Heap.
+
+-----String Pool(Special Area Inside Heap}------
+The String Pool is a special memory area where Java stores String Literals.
+Its purpose is to avoid creating duplicate String objects and save memory.
+Example:
+String s1 = "Java";
+String s2 = "Java";
+Memory representation:
+           String Pool
+        +-----------+
+        |  "Java"   |
+        +-----------+
+          ^       ^
+          |       |
+         s1      s2
+Only one "Java" object is created. Both s1 and s2 refer to the same object.
+This improves memory efficiency....
+
+---------------###########---------------
+Using new String()
+Now consider:
+String s1 = new String("Java");
+String s2 = new String("Java");
+Memory representation:
+Heap
++-----------+
+|  "Java"   | <-- s1
++-----------+
+
++-----------+
+|  "Java"   | <-- s2
++-----------+
+Even though the content is the same, two different objects are created in the Heap.
+So new String() always creates a new object.

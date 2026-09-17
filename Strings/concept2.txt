@@ -1,0 +1,15 @@
+Small Introduction to StringBuilder..
+Instead of printing immediately,
+
+we build the answer.
+
+Example:
+StringBuilder ans = new StringBuilder();
+
+Then,
+ans.append(ch);
+
+Finally,
+System.out.println(ans);
+
+This is the professional approach...

@@ -1,0 +1,55 @@
+#Two Pointer In Arrays..
+
+--> Instead of using single index here, we are using two indices(Pointers) to traverse in an array...
+Generally, In brute force approach need  to use two for loops for traversal(i,j).. Time Complexity-O(n^2)
+To reduce the complexity, and the optimal solution is using two Pointers.. Time Complexity--O(n).
+
+TYPES OF TWO POINTERS:
+
+--> It contains 4 patterns:
+1) Same Direction
+2)Opposite Direction
+3)Fast & Slow Pointer
+4)Dutch National Flag(uses Three Pointers)..
+
+
+
+#How do pointers move?
+
+There are only four moves.
+
+-->left++
+
+(Move left pointer right.)
+
+-->right--
+
+(Move right pointer left.)
+
+-->left++
+-->right--
+
+(Move both.)
+
+* Sometimes
+swap(left,right)
+{left++
+right--}
+
+---------------RULE(OPPOSITE DIRECTION}------------------
+
+If(sum < target}
+
+Increase sum.
+Move
+left++
+
+If(sum > target}
+
+Decrease sum.
+Move
+right--
+
+If(sum == target}
+Answer found.
+
